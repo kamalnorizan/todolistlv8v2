@@ -41,7 +41,8 @@
                                             {{ $user->created_at }}
                                         </td>
                                         <td>
-                                            <i class="fa fa-battery-full fa-5x sweet" aria-hidden="true"></i>
+                                            <a href="{{route('user.edit',['user'=>$user->id])}}">Edit</a>
+                                            {{-- <i class="fa fa-battery-full fa-5x sweet" aria-hidden="true"></i> --}}
                                         </td>
                                     </tr>
                                 @endforeach
