@@ -31,3 +31,7 @@ Route::get('/myblade2/{name?}', function ($name=null) {
 
 Route::resource('user', UserController::class);
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
