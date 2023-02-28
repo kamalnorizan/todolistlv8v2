@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use App\Models\Comment;
 class CommentFactory extends Factory
 {
     /**
@@ -14,7 +14,9 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'comment'=>$this->faker->sentence(rand(5,9)),
+            'todolist_id'=>rand(1,50),
+            'user_id'=>rand(1,50)
         ];
     }
 }

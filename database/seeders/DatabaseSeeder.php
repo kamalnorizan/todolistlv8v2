@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Todolist;
+use App\Models\Comment;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,6 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(200)->create();
+        // User::factory(200)->create();
+        // Todolist::factory(300)->create();
+        Comment::factory(800)->create();
     }
 }
