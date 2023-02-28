@@ -9,7 +9,10 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Senarai User</div>
+                <div class="card-header">
+                    Senarai User
+                    <a href="{{route('user.create')}}" class="btn btn-primary float-right">Create User Page</a>
+                </div>
 
                 <div class="card-body">
                     <table class="table" width="100%">
