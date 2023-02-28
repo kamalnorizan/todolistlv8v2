@@ -38,6 +38,7 @@ class UserController extends Controller
     {
         User::create($request->all());
 
+        flash('New user created successfully')->success()->important();
         return redirect()->route('user.index');
     }
 
