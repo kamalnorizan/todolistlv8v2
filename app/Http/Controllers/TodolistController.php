@@ -15,7 +15,7 @@ class TodolistController extends Controller
      */
     public function index()
     {
-        $todolists = Todolist::with('user','comments.user')->get();
+        $todolists = Todolist::with('images','user','comments.user', 'comments.images')->get();
         return view('todolist.index', compact('todolists'));
     }
 

@@ -38,4 +38,9 @@ class Comment extends Model
     {
         return $this->belongsTo(Todolist::class, 'todolist_id', 'id');
     }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
 }
