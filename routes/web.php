@@ -43,3 +43,6 @@ Route::post('todolist/', [TodolistController::class,'store'])->name('todolist.st
 Route::get('todolist/{todolist}/edit', [TodolistController::class,'edit'])->name('todolist.edit');
 Route::put('todolist/{todolist}', [TodolistController::class,'update'])->name('todolist.update');
 
+
+Route::get('wizard', [TodolistController::class,'wizard'])->name('wizard.index');
+Route::post('wizard/wizardValidate', [TodolistController::class,'wizardValidate'])->name('wizard.wizardValidate');

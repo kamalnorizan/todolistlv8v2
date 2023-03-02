@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Todolist;
 use App\Models\Image;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreTodolistRequest;
 use App\Http\Requests\UpdateTodolistRequest;
 use Auth;
+use Validator;
 // use Image as img;
 class TodolistController extends Controller
 {
@@ -112,5 +114,24 @@ class TodolistController extends Controller
     public function destroy(Todolist $todolist)
     {
         //
+    }
+
+    public function wizard()
+    {
+        return view('wizard.create');
+    }
+
+    public function wizardValidate(Request $request)
+    {
+        if($request->currentIndex == 0){
+            $request->validate([
+                'name'=>'required',
+                'email'=>'required|email|unique:users,email',
+                'password'=>'required',
+            ]);
+        }
+
+        return response()->json(['status'=>'success']);
+
     }
 }
