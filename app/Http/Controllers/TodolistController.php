@@ -30,7 +30,7 @@ class TodolistController extends Controller
      */
     public function create()
     {
-        //
+        return view('todolist.create');
     }
 
     /**

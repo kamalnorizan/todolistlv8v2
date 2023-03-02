@@ -38,3 +38,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('todolist', [TodolistController::class,'index'])->name('todolist.index');
+Route::get('todolist/create', [TodolistController::class,'create'])->name('todolist.create');
+Route::post('todolist/', [TodolistController::class,'store'])->name('todolist.store');
