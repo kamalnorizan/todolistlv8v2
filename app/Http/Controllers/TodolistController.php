@@ -41,7 +41,7 @@ class TodolistController extends Controller
      */
     public function store(StoreTodolistRequest $request)
     {
-        //
+        dd($request);
     }
 
     /**

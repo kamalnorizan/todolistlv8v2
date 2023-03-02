@@ -8,7 +8,7 @@
                 <div class="card-header">Create new Todolist</div>
 
                 <div class="card-body">
-                    {!! Form::open(['method' => 'POST', 'route' => 'todolist.store']) !!}
+                    {!! Form::open(['method' => 'POST', 'route' => 'todolist.store','files'=>true]) !!}
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                             {!! Form::label('title', 'Title') !!}
