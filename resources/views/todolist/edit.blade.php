@@ -8,13 +8,13 @@
                 <div class="card-header">Create new Todolist</div>
 
                 <div class="card-body">
-                    {!! Form::open(['method' => 'POST', 'route' => 'todolist.store','files'=>true]) !!}
+                    {!! Form::model($todolist, ['route' => ['todolist.update', $todolist->id], 'method' => 'PUT']) !!}
+
 
                         @include('todolist._form')
 
                         <div class="btn-group pull-right">
-                            {!! Form::reset("Reset", ['class' => 'btn btn-warning']) !!}
-                            {!! Form::submit("Add", ['class' => 'btn btn-success']) !!}
+                            {!! Form::submit("update", ['class' => 'btn btn-success']) !!}
                         </div>
 
                     {!! Form::close() !!}

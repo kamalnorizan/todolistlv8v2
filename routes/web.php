@@ -14,9 +14,9 @@ use App\Http\Controllers\TodolistController;
 |
 */
 
-DB::listen(function ($event) {
-    dump($event->sql);
-});
+// DB::listen(function ($event) {
+//     dump($event->sql);
+// });
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,3 +40,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('todolist', [TodolistController::class,'index'])->name('todolist.index');
 Route::get('todolist/create', [TodolistController::class,'create'])->name('todolist.create');
 Route::post('todolist/', [TodolistController::class,'store'])->name('todolist.store');
+Route::get('todolist/{todolist}/edit', [TodolistController::class,'edit'])->name('todolist.edit');
+Route::put('todolist/{todolist}', [TodolistController::class,'update'])->name('todolist.update');
+

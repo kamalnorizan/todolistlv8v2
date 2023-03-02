@@ -24,9 +24,9 @@ class StoreTodolistRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>'required|unique:todolists,title',
+            'title'=>'required',
             'description'=>'required',
-            'image'=>'image|mimes:png,jpg,jpeg|max:20000|dimensions:width=800,height=800'
+            'image'=>'image|mimes:png,jpg,jpeg|max:20000'
         ];
     }
 }

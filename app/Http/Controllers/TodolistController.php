@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todolist;
+use App\Models\Image;
 use App\Http\Requests\StoreTodolistRequest;
 use App\Http\Requests\UpdateTodolistRequest;
-
+use Auth;
+// use Image as img;
 class TodolistController extends Controller
 {
     /**
@@ -41,7 +43,30 @@ class TodolistController extends Controller
      */
     public function store(StoreTodolistRequest $request)
     {
-        dd($request);
+
+        // Todolist::create([
+        //     'title'=>$request->title,
+        // ]);
+
+        $todolist = new Todolist;
+        $todolist->title = $request->title;
+        // $todolist->user_id = Auth::user()->id;
+        $todolist->description = $request->description;
+        // $todolist->save();
+
+        Auth::user()->todolists->save($todolist);
+
+        // $todolist->images()->create([
+        //     'image_path'=>base64_encode(file_get_contents($request->file('image')))
+        // ]);
+
+        $image = new Image;
+        $image->image_path = base64_encode(file_get_contents($request->file('image')));
+
+        $todolist->images()->save($image);
+
+        flash('Created')->success()->important();
+        return redirect()->route('todolist.index');
     }
 
     /**
@@ -63,7 +88,7 @@ class TodolistController extends Controller
      */
     public function edit(Todolist $todolist)
     {
-        //
+        return view('todolist.edit',compact('todolist'));
     }
 
     /**
