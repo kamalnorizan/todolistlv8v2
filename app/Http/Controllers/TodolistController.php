@@ -217,6 +217,10 @@ class TodolistController extends Controller
 
     public function dropdownStore(Request $request)
     {
-        # code...
+        $request->validate([
+            'user'=>'required',
+            'title'=>'required',
+            'name'=>'required'
+        ]);
     }
 }
