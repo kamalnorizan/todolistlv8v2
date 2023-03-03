@@ -46,3 +46,7 @@ Route::put('todolist/{todolist}', [TodolistController::class,'update'])->name('t
 
 Route::get('wizard', [TodolistController::class,'wizard'])->name('wizard.index');
 Route::post('wizard/wizardValidate', [TodolistController::class,'wizardValidate'])->name('wizard.wizardValidate');
+
+Route::get('dropdown', [TodolistController::class,'dropdown'])->name('dropdown.index');
+Route::post('dropdown/ajaxLoadTitle', [TodolistController::class,'ajaxLoadTitle'])->name('dropdown.ajaxLoadTitle');
+Route::post('dropdown', [TodolistController::class,'dropdownStore'])->name('dropdown.dropdownStore');

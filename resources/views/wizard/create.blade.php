@@ -56,7 +56,7 @@
         .content {
             padding-right: 70px;
             padding-left: 80px;
-            height: 410px;
+            /* height: 410px; */
         }
 
         .content h3 {
@@ -119,8 +119,8 @@
         }
 
         .actions {
-            position: absolute;
-            bottom: 31px;
+            position: auto;
+            /* bottom: 31px; */
             right: 0;
             width: 100%;
         }
@@ -194,11 +194,20 @@
                             </fieldset>
                             <h3>Step 2</h3>
                             <fieldset>
-                                Section 2
+                                @include('todolist._form')
                             </fieldset>
                             <h3>Step 3</h3>
                             <fieldset>
-                                Section 3
+                                <div class="form-group{{ $errors->has('comment') ? ' has-error' : '' }}">
+                                    {!! Form::label('comment', 'Comment') !!}
+                                    {!! Form::text('comment', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                                    <small class="text-danger">{{ $errors->first('comment') }}</small>
+                                </div>
+                                <div class="form-group{{ $errors->has('imageComment') ? ' has-error' : '' }}">
+                                    {!! Form::label('imageComment', 'Image') !!}
+                                    {!! Form::file('imageComment') !!}
+                                    <small class="text-danger">{{ $errors->first('imageComment') }}</small>
+                                </div>
                             </fieldset>
                         </div>
                     </div>
@@ -213,10 +222,11 @@
     <script src="{{ asset('colorlib-wizard/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('colorlib-wizard/vendor/jquery-steps/jquery.steps.js') }}"></script>
     <script>
+        var next1 = false;
         $('#stepWizard').steps({
             headerTag: "h3",
             bodyTag: "fieldset",
-            transitionEffect: "fade",
+            transitionEffect: "slideLeft",
             labels: {
                 previous: 'Prev',
                 next: 'Next',
@@ -227,49 +237,100 @@
             transitionEffect: "slideLeft",
             onStepChanging: function (event, currentIndex, newIndex)
             {
+                if (newIndex < currentIndex) {
+                    return true;
+                }else{
+                    var form = new FormData();
 
+                    form.append('_token','{{csrf_token()}}');
+                    if(currentIndex==0){
+                        form.append('name',$('#name').val());
+                        form.append('email',$('#email').val());
+                        form.append('password',$('#password').val());
+                    }else if(currentIndex==1){
+                        form.append('title',$('#title').val());
+                        form.append('description',$('#description').val());
+                        var fileInput = $('input[name=image]')[0];
+                        if (fileInput.files.length > 0) {
+                            var file = fileInput.files[0];
+                            form.append('image', file);
+                        }
+                    }
+                    form.append('currentIndex',currentIndex);
+                    return validation(form);
+                }
+            },
+            onFinishing: function (event, currentIndex, newIndex)
+            {
                 var form = new FormData();
                 form.append('_token','{{csrf_token()}}');
-                if(currentIndex==0){
-                    var name = $('#name').val();
-                    var email = $('#email').val();
-                    var password = $('#password').val();
-                    form.append('currentIndex',currentIndex);
-                    form.append('name',name);
-                    form.append('email',email);
-                    form.append('password',password);
+                form.append('name',$('#name').val());
+                form.append('email',$('#email').val());
+                form.append('password',$('#password').val());
+                form.append('title',$('#title').val());
+                form.append('description',$('#description').val());
+                form.append('comment',$('#comment').val());
+                var fileInput = $('#image')[0];
+                if (fileInput.files.length > 0) {
+                    var file = fileInput.files[0];
+                    form.append('image', file);
                 }
-
-                var next = false;
-                $.ajax({
-                    type: "POST",
-                    url: "{{route('wizard.wizardValidate')}}",
-                    data: form,
-                    cache:false,
-                    processData: false,
-                    contentType: false,
-                    dataType: "json",
-                    success: function (response) {
-                        next = true;
-                    },
-                    error: function(e) {
-                        $.each($('.text-danger'), function (indexInArray, valueOfElement) {
-                            $(valueOfElement).text('');
-                        });
-
-                        $.each(e.responseJSON.errors, function (index, msg) {
-                            $('#'+index).closest('.form-group').find('.text-danger').text(msg[0]);
-                        });
-
-                        return false;
+                var fileInputComment = $('#imageComment')[0];
+                if (fileInputComment.files.length > 0) {
+                    var fileComment = fileInputComment.files[0];
+                    form.append('imageComment', fileComment);
+                }
+                form.append('currentIndex',currentIndex);
+                return validation(form);
+            },
+            onFinished: function (event, currentIndex) {
+                swal("All of the inputs recorded successfully",{
+                    icon:'success',
+                    buttons: {
+                        confirm: {
+                            text: "Ok",
+                            value: true,
+                            visible: true,
+                            className: "",
+                            closeModal: true
+                        }
                     }
                 }).then(()=>{
-
-                        return true;
-
+                    window.location = "{{route('todolist.index')}}";
                 });
-
             }
         });
+
+        function clearError() {
+            $.each($('.text-danger'), function (indexInArray, valueOfElement) {
+                $(valueOfElement).text('');
+            });
+        }
+
+        function validation(form) {
+            clearError();
+            var status= false;
+            $.ajax({
+                type: "POST",
+                url: "{{route('wizard.wizardValidate')}}",
+                data: form,
+                cache:false,
+                async: false,
+                processData: false,
+                contentType: false,
+                dataType: "json",
+                success: function (response) {
+                    if(response.status=='success'){
+                        status = true;
+                    }else{
+                        $.each(response.errors, function (indexInArray, valueOfElement) {
+                            $('#'+indexInArray).closest('.form-group').find('.text-danger').text(valueOfElement[0]);
+                        });
+                        status = false;
+                    }
+                }
+            });
+            return status;
+        }
     </script>
 @endsection
